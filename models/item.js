@@ -1,8 +1,6 @@
 var mongoose = require('mongoose');
 /*require('mongoose-currency').loadType(mongoose);
 var Currency = mongoose.Types.Currency;*/
-require('mongoose-double')(mongoose);
-var SchemaTypes = mongoose.Schema.Types;
 
 var itemSchema = new mongoose.Schema({
     name: {
