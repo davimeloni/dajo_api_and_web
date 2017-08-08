@@ -66,7 +66,8 @@ module.exports = function (app, passport) {
     ));
 
     app.get('/auth/facebook/callback', passport.authenticate('facebook', { failureRedirect: '/login' }), function(req, res) {
-        res.redirect('/#!/selecttable/' + facebookUser.email + '/' + facebookUser.OauthToken);
+        //res.redirect('/#!/selecttable/' + facebookUser.email + '/' + facebookUser.OauthToken);
+        res.json(facebookUser);
         console.log("aqui é o res" + res.body);
         console.log("-------------------------");
         console.log("aqui é o req " + req.body);
