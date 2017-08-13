@@ -6,6 +6,7 @@ var morgan = require('morgan');
 //var session = require('express-session');
 var passport = require('passport');
 //var flash = require('connect-flash');
+var cors = require('cors');
 
 //connect to DB
 require('./config/db');
@@ -21,6 +22,8 @@ app.set('port', (process.env.PORT || '3000'));
 var socialauth = require('./config/passport')(app, passport);
 //middlewares -------------------------------
 
+app.use(cors());
+
 //app.use(morgan('dev'));
 app.use(cookieParser());
 
@@ -34,12 +37,34 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+
+//handling cors
+// ## CORS middleware
+// 
+// see: http://stackoverflow.com/questions/7067966/how-to-allow-cors-in-express-nodejs
+var allowCrossDomain = function(req, res, next) {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+      
+    // intercept OPTIONS method
+    if ('OPTIONS' == req.method) {
+      res.send(200, '');
+    }
+    else {
+      next();
+    }
+};
+app.use(allowCrossDomain);
+/*
 app.use(function(req, res, next) {
     res.header('Access-Control-Allow-Origin', "*");
     res.header('Access-Control-Allow-Methods','GET,PUT,POST,DELETE'); 
     res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With'); 
     next();
 })
+*/
+//finish handling cors
 
 //log every request
 app.use(function (req, res, next) {
