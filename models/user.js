@@ -4,13 +4,14 @@ var Schema = mongoose.Schema;
 
 var userSchema = new Schema({
     username: String,
+    displayName: String,
     email: String,
     password: String,
     OauthId: String,
     OauthToken: String,
     kind: {
         type: String,
-        
+        default: 'Customer'
     },
     isLogged: {
         type: Boolean
