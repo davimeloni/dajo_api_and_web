@@ -5,6 +5,16 @@ var mongoose = require('mongoose');
 var Account = require('../models/account');
 
 module.exports.createAccount = function (req, res) {
+    var accountData = {};
+    console.log('req.body');
+    console.log(req.body);
+    
+    accountData = {
+        customer: req.body.customer,
+        table: req.body.table,
+        status: 'Opened'
+    };
+
     Account.findOne({}, {}, { sort: { 'createdAt': -1 } }, function (err, account) {
         if (err) throw (err);
         var increment = 1;
@@ -12,8 +22,9 @@ module.exports.createAccount = function (req, res) {
         if (account) {
             increment = account.counter + 1;
         }
-        var newAccount = new Account(req.body);
+        var newAccount = new Account(accountData);
         newAccount.counter = increment;
+        console.log('new account?');
         console.log(newAccount);
         newAccount.save(function (err, accountCreated) {
             if (err) throw (err);
@@ -53,7 +64,7 @@ module.exports.getAccount = function (req, res) {
         .populate('customer')
         .exec(function (err, account) {
             if (err) throw err;
-            console.log(account.counter + " getting...");
+            console.log("Account " + account.counter + " getting...");
             res.json(account);
         })
 }
@@ -85,6 +96,7 @@ module.exports.addItemAccount = function (req, res) {
             console.log("account updated with new item");
             console.log("printing the new account");
             console.log(account);
+            res.json(account);
         })
 
     });
@@ -117,11 +129,13 @@ module.exports.updateItensAccount = function (req, res) {
             })
 
     }
-
+    res('account updated');
 }
 
 //delete item from account
 module.exports.deleteItemAccount = function (req, res) {
+    console.log(req.body);
+    console.log('chegou aqui?');
     Account.findOneAndUpdate({ _id: req.params.accountId }, { $pull: { orderedItens: { _id: req.params.itemId } } }, function (err, account) {
         if (err) throw err;
         console.log("item deleted");
@@ -132,6 +146,7 @@ module.exports.deleteItemAccount = function (req, res) {
             if (err) throw err;
             console.log("updated account");
             console.log(account);
+            res.json(account);
         })
 
     });

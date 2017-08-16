@@ -38,9 +38,6 @@ router
     .route('/account')
     .post(accountController.createAccount)
     .get(accountController.getAllAccounts);
-router
-    .route('/createaccount')
-    .post(accountController.createAccount);
 
     
 router
@@ -86,5 +83,9 @@ router
 router
     .route('/user/:email')
     .get(userController.getUserByEmail);
+
+router
+    .route('/user')
+    .post(userController.createCustomer);
 
 module.exports = router;
