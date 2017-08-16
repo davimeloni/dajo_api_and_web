@@ -105,6 +105,10 @@ module.exports.addItemAccount = function (req, res) {
 //update item or itens in an account
 module.exports.updateItensAccount = function (req, res) {
     console.log("updating itens");
+    var accountRes = {
+        accountId: req.params.accountId,
+        status: 'updated'
+    };
 
     //if updating array
     if (Array.isArray(req.body.orderedItens)) {
@@ -117,7 +121,7 @@ module.exports.updateItensAccount = function (req, res) {
                     if (err) throw err;
                     console.log(account);
                 })
-        }, this);
+        }, res.json(accountRes));
 
         //if updating one item
     } else {
@@ -129,7 +133,7 @@ module.exports.updateItensAccount = function (req, res) {
             })
 
     }
-    res('account updated');
+    res(accountRes);
 }
 
 //delete item from account
