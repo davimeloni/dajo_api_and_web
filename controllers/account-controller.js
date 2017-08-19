@@ -76,6 +76,7 @@ module.exports.updateAccount = function (req, res) {
         if (err) throw err;
         console.log(account._id + " account was updated");
         console.log(account);
+        res.json(account);
     });
 }
 

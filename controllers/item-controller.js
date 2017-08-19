@@ -29,8 +29,7 @@ module.exports.createItem = function(req, res) {
         res.writeHead(200, {
             'Content-Type': 'text/plain'
         });
-        //body of response
-        res.end('Item ' + id + ' added successful');
+        res.json(item);
     });
 }
 
