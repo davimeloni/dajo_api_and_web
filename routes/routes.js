@@ -129,7 +129,8 @@ router.post('/authenticate', (req, res, next) => {
                 user: {
                     id: user._id,
                     username: user.username,
-                    email: user.email
+                    email: user.email,
+                    name: user.name
                 }
             });
         } else {
