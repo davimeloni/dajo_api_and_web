@@ -19,16 +19,16 @@ var app = express();
 //define port
 app.set('port', (process.env.PORT || '3000'));
 
-var socialauth = require('./config/passport')(app, passport);
+//socialAuth Disabled
+//var socialauth = require('./config/passport')(app, passport);
 //middlewares -------------------------------
-
-//app.use(cors());
 
 //app.use(morgan('dev'));
 app.use(cookieParser());
 
-//app.use(passport.initialize());
-//app.use(passport.session());
+app.use(passport.initialize());
+app.use(passport.session());
+require('./config/passport')(passport);
 //app.use(flash());
 
 //set directories the app will use
@@ -56,15 +56,7 @@ var allowCrossDomain = function(req, res, next) {
     }
 };
 app.use(allowCrossDomain);
-/*
-app.use(function(req, res, next) {
-    res.header('Access-Control-Allow-Origin', "*");
-    res.header('Access-Control-Allow-Methods','GET,PUT,POST,DELETE'); 
-    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With'); 
-    next();
-})
-*/
-//finish handling cors
+
 
 //log every request
 app.use(function (req, res, next) {

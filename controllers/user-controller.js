@@ -1,6 +1,7 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
+var bcrypt = require('bcryptjs');
 
 var User = require('../models/user');
 
@@ -35,4 +36,28 @@ module.exports.getUserByEmail = function (req, res) {
     if (err) throw err;
     res.json(user);
   })
+}
+
+// later functions
+
+module.exports.getUserById = function (id, callback) {
+  User.findById(id, callback);
+}
+
+module.exports.getUserByUsername = function (username, callback) {
+  const query = { username: username }
+  User.findOne(query, callback);
+}
+
+
+module.exports.addUser = function (newUser, callback) {
+  newUser.save(callback);
+}
+module.exports.comparePassword = function (password, userPassword, callback) {
+    var isMatch = false;
+    if(password === userPassword) {
+      isMatch = true;
+    }
+    if (err) throw err;
+    callback(null, isMatch);
 }

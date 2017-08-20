@@ -8,6 +8,7 @@
     "angular-jwt": "^0.0.9",
     "angular-route": "^1.5.6",
     "bcrypt-nodejs": "0.0.3",
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.14.2",
     "connect-flash": "^0.1.1",
     "cookie-parser": "latest",
@@ -22,8 +23,10 @@
     "morgan": "^1.8.2",
     "passport": "^0.3.2",
     "passport-facebook": "^2.1.1",
+    "passport-jwt": "^3.0.0",
     "passport-local": "^1.0.0",
-    "passport-local-mongoose": "^4.0.0"
+    "passport-local-mongoose": "^4.0.0",
+    "typescript": "^2.4.2"
   },
   "devDependencies": {
     "connect-modrewrite": "^0.10.1",

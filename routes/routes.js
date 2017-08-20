@@ -1,6 +1,8 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var passport = require('passport');
+const jwt = require('jsonwebtoken');
+var config = require('../config/config');
 var User = require('../models/user');
 //Set router
 var router = express.Router();
@@ -39,14 +41,14 @@ router
     .post(accountController.createAccount)
     .get(accountController.getAllAccounts);
 
-    
+
 router
     .route('/lastaccount')
     .get(accountController.getLastAccount);
 
 //router
- //   .route('/getAccountToMenu/:accountId')
-  //  .get(accountController.getAccountToMenu);
+//   .route('/getAccountToMenu/:accountId')
+//  .get(accountController.getAccountToMenu);
 
 //get account or update by its id
 router
@@ -87,5 +89,83 @@ router
 router
     .route('/user')
     .post(userController.createCustomer);
+
+// Register
+router.post('/register', (req, res, next) => {
+    let newUser = new User({
+        email: req.body.email,
+        username: req.body.username,
+        password: req.body.password
+    });
+
+    userController.addUser(newUser, (err, user) => {
+        if (err) {
+            res.json({ success: false, msg: 'Failed to register user. Username or Email already registered' });
+        } else {
+            res.json({ success: true, msg: 'User registered' });
+        }
+    });
+});
+
+// Authenticate
+router.post('/authenticate', (req, res, next) => {
+    const username = req.body.username;
+    const password = req.body.password;
+
+    userController.getUserByUsername(username, (err, user) => {
+        if (err) throw err;
+        if (!user) {
+            return res.json({ success: false, msg: 'User not found' });
+        }
+
+        if (password == user.password) {
+            const token = jwt.sign(user, config.secretKey, {
+                expiresIn: 604800 // 1 week
+            });
+
+            res.json({
+                success: true,
+                token: 'JWT ' + token,
+                user: {
+                    id: user._id,
+                    username: user.username,
+                    email: user.email
+                }
+            });
+        } else {
+            return res.json({ success: false, msg: 'Wrong password' });
+        }
+
+        /*
+      userController.comparePassword(password, user.password, (err, isMatch) => {
+        if(err) throw err;
+        if(isMatch){
+          const token = jwt.sign(user, config.secret, {
+            expiresIn: 604800 // 1 week
+          });
+  
+          res.json({
+            success: true,
+            token: 'JWT '+token,
+            user: {
+              id: user._id,
+              username: user.username,
+              email: user.email
+            }
+          });
+        } else {
+          return res.json({success: false, msg: 'Wrong password'});
+        }
+        
+      });
+      */
+    });
+});
+
+// Profile
+router.get('/profile', passport.authenticate('jwt', { session: false }), (req, res, next) => {
+    res.json({ user: req.user });
+});
+
 
 module.exports = router;
