@@ -69,6 +69,11 @@ app.use(function (req, res, next) {
 
 //api routes
 app.use('/', routes);
+
+//routing to angular pages
+app.get('*', function(req, res) {
+  res.sendfile('public/index.html')
+})
 //-----------------------------------------------
 
 //Request listener

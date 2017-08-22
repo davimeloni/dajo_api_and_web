@@ -8,7 +8,7 @@ module.exports.createAccount = function (req, res) {
     var accountData = {};
     console.log('req.body');
     console.log(req.body);
-    
+
     accountData = {
         customer: req.body.customer,
         table: req.body.table,
@@ -36,15 +36,15 @@ module.exports.createAccount = function (req, res) {
 }
 
 //get all accounts
-module.exports.getAllAccounts = function(req, res) {
+module.exports.getAllAccounts = function (req, res) {
     Account.find({})
-            .populate('orderedItens.orderedItem')
-            .populate('customer')
-            .exec(function(err, accounts) {
-                if (err) throw err;
-                console.log("getting all accounts");
-                res.json(accounts);
-    })
+        .populate('orderedItens.orderedItem')
+        .populate('customer')
+        .exec(function (err, accounts) {
+            if (err) throw err;
+            console.log("getting all accounts");
+            res.json(accounts);
+        })
 }
 
 //get the last account created
@@ -131,10 +131,10 @@ module.exports.updateItensAccount = function (req, res) {
             { $set: { 'orderedItens.$.status': req.body.orderedItens.status } }, function (err, account) {
                 if (err) throw err;
                 console.log(account);
+                res.json(accountRes);
             })
 
     }
-    res(accountRes);
 }
 
 //delete item from account
@@ -147,7 +147,7 @@ module.exports.deleteItemAccount = function (req, res) {
         console.log(req.body);
         account.price = account.price - req.body.item.orderedItem.price;
 
-        account.save(function(err, account) {
+        account.save(function (err, account) {
             if (err) throw err;
             console.log("updated account");
             console.log(account);
@@ -166,6 +166,16 @@ module.exports.getAccountItensKitchen = function (req, res) {
             if (err) throw err;
             res.json(accounts);
             //console.log(accounts);
+        });
+}
+
+module.exports.getAccountsToKitchen = function (req, res) {
+    Account.find({ 'status': 'Opened', 'orderedItens': { $gt: [] } })
+        .populate('orderedItens.orderedItem')
+        .populate('customer')
+        .exec(function (err, accounts) {
+            if (err) throw err;
+            res.json(accounts);
         });
 }
 

@@ -79,8 +79,9 @@ router
 //get accounts with itens in the kitchen
 router
     .route('/accountskitchen')
-    .get(accountController.getAccountItensKitchen);
+    .get(accountController.getAccountsToKitchen);
 
+// -------------------USER---------------------------------
 //user
 router
     .route('/user/:email')
@@ -95,7 +96,8 @@ router.post('/register', (req, res, next) => {
     let newUser = new User({
         email: req.body.email,
         username: req.body.username,
-        password: req.body.password
+        password: req.body.password,
+        name: req.body.name
     });
 
     userController.addUser(newUser, (err, user) => {
