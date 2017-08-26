@@ -17,6 +17,14 @@ module.exports.getAllItens = function(req, res) {
         });
 };
 
+module.exports.getActiveItens = function(req, res) {
+    item.find({"isActive": true})
+        .exec(function(err, itens) {
+            if (err) throw err;
+            res.json(itens);
+        });
+}
+
 module.exports.createItem = function(req, res) {
     //create item
     Item.create(req.body, function(err, item) {
@@ -26,9 +34,6 @@ module.exports.createItem = function(req, res) {
         //response telling the item was created
         var id = item._id;
         //response with 200 = ok
-        res.writeHead(200, {
-            'Content-Type': 'text/plain'
-        });
         res.json(item);
     });
 }

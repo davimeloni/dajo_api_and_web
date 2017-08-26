@@ -23,6 +23,10 @@ router
     .post(itemController.createItem);
 
 router
+    .route('/activeitens')
+    .get(itemController.getActiveItens);
+
+router
     .route('/item/:itemId')
     .put(itemController.updateItem)
     .delete(itemController.deleteItem);
