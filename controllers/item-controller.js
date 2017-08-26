@@ -18,7 +18,7 @@ module.exports.getAllItens = function(req, res) {
 };
 
 module.exports.getActiveItens = function(req, res) {
-    item.find({"isActive": true})
+    Item.find({"isActive": true})
         .exec(function(err, itens) {
             if (err) throw err;
             res.json(itens);
