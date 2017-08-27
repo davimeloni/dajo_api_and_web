@@ -126,7 +126,7 @@ router.post('/authenticate', (req, res, next) => {
 
         if (password == user.password) {
             const token = jwt.sign(user, config.secretKey, {
-                expiresIn: 604800 // 1 week
+                expiresIn: 43200 // 12 hours
             });
 
             res.json({
