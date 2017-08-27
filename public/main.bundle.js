@@ -99,12 +99,14 @@ AppComponent = __decorate([
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__components_manageitens_manageitens_component__ = __webpack_require__("../../../../../src/app/components/manageitens/manageitens.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__services_manageitens_service__ = __webpack_require__("../../../../../src/app/services/manageitens.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__components_item_item_component__ = __webpack_require__("../../../../../src/app/components/item/item.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__pipes_filters_pipe__ = __webpack_require__("../../../../../src/app/pipes/filters.pipe.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
 
 
 
@@ -154,7 +156,8 @@ AppModule = __decorate([
             __WEBPACK_IMPORTED_MODULE_18__components_dialog_dialog_component__["a" /* DialogComponent */],
             __WEBPACK_IMPORTED_MODULE_19__components_manageaccounts_manageaccounts_component__["a" /* ManageaccountsComponent */],
             __WEBPACK_IMPORTED_MODULE_21__components_manageitens_manageitens_component__["a" /* ManageitensComponent */],
-            __WEBPACK_IMPORTED_MODULE_23__components_item_item_component__["a" /* ItemComponent */]
+            __WEBPACK_IMPORTED_MODULE_23__components_item_item_component__["a" /* ItemComponent */],
+            __WEBPACK_IMPORTED_MODULE_24__pipes_filters_pipe__["a" /* FiltersPipe */]
         ],
         imports: [
             __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__["a" /* BrowserModule */],
@@ -285,7 +288,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/components/home/home.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"jumbotron text-center\">\n  <h1>Food App</h1>\n  <p class=\"lead\">Restaurante Home Page</p>\n  <button (click)=\"testDialog()\">Test Modal</button>\n</div>\n\n\n\n"
+module.exports = "<div class=\"jumbotron text-center\">\n  <h1>Food App</h1>\n  <p class=\"lead\">Restaurante Home Page</p>\n</div>\n\n\n\n"
 
 /***/ }),
 
@@ -355,7 +358,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/components/item/item.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "\n<div class=\"modal-body\">\n  <form (submit)=\"saveItem(item)\">\n  <div class=\"form-group\">\n    <label>*Item:</label>\n    <input type=\"text\" [(ngModel)]=\"item.name\" name=\"name\" class=\"form-control\">\n  </div>\n  <div class=\"form-group\">\n    <label>*Descricao:</label>\n    <textarea rows=\"3\" [(ngModel)]=\"item.description\" name=\"description\" class=\"form-control\">\n    </textarea>\n  </div>\n\n  <div class=\"form-group\">\n    <label>*Categoria:</label>\n    <select [(ngModel)]=\"selectedCategory\" name=\"category\" class=\"form-control\" >\n      <option class=\"dropdown\" *ngFor=\"let c of categories\" [ngValue]=\"c\">\n        {{c.category}}\n    </select>\n  </div>\n\n  <div class=\"form-group\">\n    <label>*Tipo:</label>\n    <select [(ngModel)]=\"selectedCategoryType\" name=\"categorytype\" class=\"form-control\" >\n      <option class=\"dropdown\" *ngFor=\"let categorytype of selectedCategory.categorytype\" [ngValue]=\"categorytype\">\n        {{categorytype}}\n    </select>\n  </div>\n  \n  <div class=\"form-group\">\n    <label>*Preco:</label>\n    <input type=\"number\" [(ngModel)]=\"item.price\" name=\"price\" class=\"form-control\">\n  </div>\n\n  <div class=\"form-group form-inline\">\n    <label>Ativo: </label>\n    <input type=\"checkbox\" [(ngModel)]=\"item.isActive\" name=\"isActive\" class=\"form-control\">\n  </div>\n\n  <div class=\"modal-footer\">\n    <input type=\"submit\" class=\"btn btn-primary\" value=\"Salvar\">\n    <a class=\"btn btn-secondary\" (click)=\"onClose()\" \n      style=\"background: lightsalmon; color: white\">Fechar</a>\n  </div>\n</form>\n</div>"
+module.exports = "\n<div class=\"modal-body\">\n  <form (submit)=\"saveItem(item)\">\n  <div class=\"form-group\">\n    <label>*Item:</label>\n    <input type=\"text\" [(ngModel)]=\"item.name\" name=\"name\" class=\"form-control\">\n  </div>\n  <div class=\"form-group\">\n    <label>*Descricao:</label>\n    <textarea rows=\"3\" [(ngModel)]=\"item.description\" name=\"description\" class=\"form-control\">\n    </textarea>\n  </div>\n\n  <div class=\"form-group\">\n    <label>*Categoria:</label>\n    <select [(ngModel)]=\"selectedCategory\" name=\"category\" class=\"form-control\"\n            (ngModelChange)=\"selectedCategoryType = selectedCategory.categorytype[0];\" >\n      <option class=\"dropdown\" *ngFor=\"let c of categories\" [ngValue]=\"c\">\n        {{c.category}}\n    </select>\n  </div>\n\n  <div class=\"form-group\">\n    <label>*Tipo:</label>\n    <select [(ngModel)]=\"selectedCategoryType\" name=\"categorytype\" class=\"form-control\" >\n      <option class=\"dropdown\" *ngFor=\"let categorytype of selectedCategory.categorytype\" [ngValue]=\"categorytype\">\n        {{categorytype}}\n    </select>\n  </div>\n  \n  <div class=\"form-group\">\n    <label>*Preco:</label>\n    <input type=\"number\" [(ngModel)]=\"item.price\" name=\"price\" class=\"form-control\">\n  </div>\n\n  <div class=\"form-group form-inline\">\n    <label>Ativo: </label>\n    <input type=\"checkbox\" [(ngModel)]=\"item.isActive\" name=\"isActive\" class=\"form-control\">\n  </div>\n\n  <div class=\"modal-footer\">\n    <input type=\"submit\" class=\"btn btn-primary\" value=\"Salvar\">\n    <a class=\"btn btn-secondary\" (click)=\"onClose()\" \n      style=\"background: lightsalmon; color: white\">Fechar</a>\n  </div>\n</form>\n</div>"
 
 /***/ }),
 
@@ -397,8 +400,6 @@ var ItemComponent = (function () {
             console.log(res);
             _this.categories = res;
             console.log(_this.categories);
-            _this.selectedCategory = _this.categories[0];
-            _this.selectedCategoryType = _this.selectedCategory.categorytype[0];
         });
     };
     ItemComponent.prototype.onClose = function () {
@@ -792,7 +793,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/components/manageaccounts/manageaccounts.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container\">\n\n  <table class=\"table table-responsive table-hover\">\n    <thead>\n      <tr>\n        <th>Itens</th>\n        <th>Numero</th>\n        <th>Cliente</th>\n        <th>Mesa</th>\n        <th>Status</th>\n        <th>Aberta em</th>\n        <th>Ultima Atualização</th>\n        <th>Preço</th>\n      </tr>\n    </thead>\n    <tbody *ngFor=\"let account of accounts; let i = index\">\n      <tr>\n        <td>\n          <a class=\"btn btn-link\" (click)=\"toggle[i] = !toggle[i]\">\n            <span class=\"glyphicon glyphicon-plus-sign\" *ngIf=\"!toggle[i]\"></span>\n            <span class=\"glyphicon glyphicon-minus-sign\" *ngIf=\"toggle[i]\"></span>\n          </a>\n        </td>\n        <td style=\"padding-top: 20px;\">{{account.counter}}</td>\n        <td style=\"padding-top: 20px;\">{{account.customer.username}}</td>\n        <td style=\"padding-top: 20px;\">{{account.table}}</td>\n        <td style=\"padding-top: 20px;\">{{account.status}}</td>\n        <td style=\"padding-top: 20px;\">{{account.createdAt | date:'dd/MM/yyyy @ h:mma'}}</td>\n        <td style=\"padding-top: 20px;\">{{account.updatedAt | date:'dd/MM/yyyy @ h:mma'}}</td>\n        <td style=\"padding-top: 20px;\">{{account.price | currency:'BRL':true}}</td>\n      </tr>\n      <tr *ngIf=\"toggle[i]\" style=\"background: darkgray; color: white;\">\n        <td colspan=\"8\">\n          <div class=\"row-fluid\" style=\"text-align: center justify; margin-left: 100px;\" *ngFor=\"let item of account.orderedItens\">\n            <div class=\"col-md-4\">\n              <span>Item: {{item.orderedItem.name}}</span>\n            </div>\n            <div class=\"col-md-4\">\n              <span>Status: {{item.status}}</span>\n            </div>\n            <div id=\"price\" class=\"col-md-4\">\n              <span>Preço: {{item.orderedItem.price | currency:'BRL':true}}</span>\n            </div>\n          </div>\n        </td>\n      </tr>\n    </tbody>\n  </table>\n\n\n</div>"
+module.exports = "<div class=\"container\">\n\n  <div class=\"input-group\">\n    <span class=\"input-group-addon\" id=\"basic-addon1\">\n      <i class=\"glyphicon glyphicon-search\"></i>\n    </span>\n    <input type=\"text\" class=\"form-control\" [(ngModel)]=\"searchText\" name=\"searchText\" placeholder=\"Pesquisa em Geral\" aria-describedby=\"basic-addon1\">\n  </div>\n\n  <br>\n\n  <table class=\"table table-responsive table-hover\">\n    <thead>\n      <tr>\n        <th>Itens</th>\n        <th>Numero</th>\n        <th>Cliente</th>\n        <th>Mesa</th>\n        <th>Status</th>\n        <th>Aberta em</th>\n        <th>Ultima Atualização</th>\n        <th>Preço</th>\n      </tr>\n    </thead>\n    <tbody *ngFor=\"let account of accounts | filters: searchText; let i = index\">\n      <tr>\n        <td>\n          <a class=\"btn btn-link\" (click)=\"toggle[i] = !toggle[i]\">\n            <span class=\"glyphicon glyphicon-plus-sign\" *ngIf=\"!toggle[i]\"></span>\n            <span class=\"glyphicon glyphicon-minus-sign\" *ngIf=\"toggle[i]\"></span>\n          </a>\n        </td>\n        <td style=\"padding-top: 20px;\">{{account.counter}}</td>\n        <td style=\"padding-top: 20px;\">{{account.customer.username}}</td>\n        <td style=\"padding-top: 20px;\">{{account.table}}</td>\n        <td style=\"padding-top: 20px;\">{{account.status}}</td>\n        <td style=\"padding-top: 20px;\">{{account.createdAt | date:'dd/MM/yyyy @ h:mma'}}</td>\n        <td style=\"padding-top: 20px;\">{{account.updatedAt | date:'dd/MM/yyyy @ h:mma'}}</td>\n        <td style=\"padding-top: 20px;\">{{account.price | currency:'BRL':true}}</td>\n      </tr>\n      <tr *ngIf=\"toggle[i]\" style=\"background: darkgray; color: white;\">\n        <td colspan=\"8\">\n          <div class=\"row-fluid\" style=\"text-align: center justify; margin-left: 100px;\" \n              *ngFor=\"let item of account.orderedItens\">\n            <div class=\"col-md-4\">\n              <span>Item: {{item.orderedItem.name}}</span>\n            </div>\n            <div class=\"col-md-4\">\n              <span>Status: {{item.status}}</span>\n            </div>\n            <div id=\"price\" class=\"col-md-4\">\n              <span>Preço: {{item.orderedItem.price | currency:'BRL':true}}</span>\n            </div>\n          </div>\n        </td>\n      </tr>\n    </tbody>\n  </table>\n\n\n</div>"
 
 /***/ }),
 
@@ -828,6 +829,7 @@ var ManageaccountsComponent = (function () {
         this.authService = authService;
         this.flashMessage = flashMessage;
         this.toggle = {};
+        this.searchText = '';
     }
     ManageaccountsComponent.prototype.ngOnInit = function () {
         if (!this.authService.loggedIn()) {
@@ -887,7 +889,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/components/manageitens/manageitens.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "\n<button class=\"btn btn-primary\" (click)=\"createItem()\">Criar Item</button>\n\n<table class=\"table table-responsive table-hover\">\n  <thead>\n    <tr>\n      <th>Item</th>\n      <th>Descricao</th>\n      <th>Categoria</th>\n      <th>Tipo</th>\n      <th>Ativo</th>\n      <th>Preço</th>\n      <th>Editar</th>\n      <th>Remover</th>\n    </tr>\n  </thead>\n  <tbody>\n    <tr *ngFor=\"let item of itens\">\n      <td>{{item.name}}</td>\n      <td>{{item.description}}</td>\n      <td>{{item.category}}</td>\n      <td>{{item.categorytype}}</td>\n      <td>{{item.isActive}}</td>\n      <td>{{item.price | currency:'BRL':true}}</td>\n      <td>\n        <span (click)=\"editItem(item)\">\n          <i class=\"glyphicon glyphicon-edit\"></i>\n        </span>\n      </td>\n      <td>\n        <span (click)=\"removeItem(item)\">\n          <i class=\"glyphicon glyphicon-trash\"></i>\n        </span>\n      </td>\n    </tr>\n  </tbody>\n</table>"
+module.exports = "<div>\n  <button class=\"btn btn-primary\" (click)=\"createItem()\">Criar Item</button>\n</div>\n\n<br>\n\n<div class=\"input-group\">\n  <span class=\"input-group-addon\" id=\"basic-addon1\">\n      <i class=\"glyphicon glyphicon-search\"></i>\n    </span>\n  <input type=\"text\" class=\"form-control\" [(ngModel)]=\"searchText\" name=\"searchText\" placeholder=\"Pesquisa em Geral\" aria-describedby=\"basic-addon1\">\n</div>\n\n<br>\n\n<table class=\"table table-responsive table-hover\">\n  <thead>\n    <tr>\n      <th>Item</th>\n      <th>Descricao</th>\n      <th>Categoria</th>\n      <th>Tipo</th>\n      <th>Ativo</th>\n      <th>Preço</th>\n      <th>Editar</th>\n      <th>Remover</th>\n    </tr>\n  </thead>\n  <tbody>\n    <tr *ngFor=\"let item of itens | filters: searchText;\">\n      <td>{{item.name}}</td>\n      <td>{{item.description}}</td>\n      <td>{{item.category}}</td>\n      <td>{{item.categorytype}}</td>\n      <td>{{item.isActive}}</td>\n      <td>{{item.price | currency:'BRL':true}}</td>\n      <td>\n        <span (click)=\"editItem(item)\">\n          <i class=\"glyphicon glyphicon-edit\"></i>\n        </span>\n      </td>\n      <td>\n        <span (click)=\"removeItem(item)\">\n          <i class=\"glyphicon glyphicon-trash\"></i>\n        </span>\n      </td>\n    </tr>\n  </tbody>\n</table>"
 
 /***/ }),
 
@@ -929,6 +931,7 @@ var ManageitensComponent = (function () {
         this.authService = authService;
         this.flashMessage = flashMessage;
         this.dialog = dialog;
+        this.searchText = '';
     }
     ManageitensComponent.prototype.ngOnInit = function () {
         this.loadItens();
@@ -1109,7 +1112,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/components/register/register.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<h2 class=\"page-header\">Register</h2>\n<form (submit)=\"onRegisterSubmit()\">\n  <div class=\"form-group\">\n    <label>Name</label>\n    <input type=\"text\" [(ngModel)]=\"name\" name=\"name\" class=\"form-control\">\n  </div>\n  <div class=\"form-group\">\n    <label>Username</label>\n    <input type=\"text\" [(ngModel)]=\"username\" name=\"username\" class=\"form-control\">\n  </div>\n  <div class=\"form-group\">\n    <label>Email</label>\n    <input type=\"text\" [(ngModel)]=\"email\" name=\"email\" class=\"form-control\" >\n  </div>\n  <div class=\"form-group\">\n    <label>Password</label>\n    <input type=\"password\" [(ngModel)]=\"password\" name=\"password\" class=\"form-control\">\n  </div>\n  <input type=\"submit\" class=\"btn btn-primary\" value=\"Submit\">\n</form>\n"
+module.exports = "<h2 class=\"page-header\">Registrar</h2>\n<form (submit)=\"onRegisterSubmit()\">\n  <div class=\"form-group\">\n    <label>Nome</label>\n    <input type=\"text\" [(ngModel)]=\"name\" name=\"name\" class=\"form-control\">\n  </div>\n  <div class=\"form-group\">\n    <label>Username</label>\n    <input type=\"text\" [(ngModel)]=\"username\" name=\"username\" class=\"form-control\">\n  </div>\n  <div class=\"form-group\">\n    <label>Email</label>\n    <input type=\"text\" [(ngModel)]=\"email\" name=\"email\" class=\"form-control\" >\n  </div>\n  <div class=\"form-group\">\n    <label>Password</label>\n    <input type=\"password\" [(ngModel)]=\"password\" name=\"password\" class=\"form-control\">\n  </div>\n  <input type=\"submit\" class=\"btn btn-primary\" value=\"Submit\">\n</form>\n"
 
 /***/ }),
 
@@ -1238,6 +1241,47 @@ AuthGuard = __decorate([
 
 var _a, _b;
 //# sourceMappingURL=auth.guard.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/pipes/filters.pipe.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return FiltersPipe; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+var FiltersPipe = (function () {
+    function FiltersPipe() {
+    }
+    FiltersPipe.prototype.transform = function (value, args) {
+        if (!args) {
+            return value;
+        }
+        return value.filter(function (item) {
+            for (var key in item) {
+                if ((typeof item[key] === 'string' || item[key] instanceof String) &&
+                    (item[key].indexOf(args) !== -1)) {
+                    return true;
+                }
+            }
+        });
+    };
+    return FiltersPipe;
+}());
+FiltersPipe = __decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Pipe"])({
+        name: 'filters'
+    })
+], FiltersPipe);
+
+//# sourceMappingURL=filters.pipe.js.map
 
 /***/ }),
 
