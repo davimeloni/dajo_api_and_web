@@ -136,7 +136,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 var appRoutes = [
-    { path: '', component: __WEBPACK_IMPORTED_MODULE_9__components_home_home_component__["a" /* HomeComponent */] },
+    { path: '', redirectTo: 'home', pathMatch: 'full' },
+    { path: 'home', component: __WEBPACK_IMPORTED_MODULE_9__components_home_home_component__["a" /* HomeComponent */] },
     { path: 'register', component: __WEBPACK_IMPORTED_MODULE_8__components_register_register_component__["a" /* RegisterComponent */] },
     { path: 'login', component: __WEBPACK_IMPORTED_MODULE_7__components_login_login_component__["a" /* LoginComponent */] },
     { path: 'kitchen', component: __WEBPACK_IMPORTED_MODULE_14__components_kitchen_kitchen_component__["a" /* KitchenComponent */] },
@@ -306,6 +307,7 @@ module.exports = "<div class=\"jumbotron text-center\">\n  <h1>Food App</h1>\n  
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_material__ = __webpack_require__("../../../material/@angular/material.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_dialog_dialog_component__ = __webpack_require__("../../../../../src/app/components/dialog/dialog.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_auth_service__ = __webpack_require__("../../../../../src/app/services/auth.service.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -318,11 +320,23 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 var HomeComponent = (function () {
-    function HomeComponent(dialog) {
+    function HomeComponent(dialog, authService) {
         this.dialog = dialog;
+        this.authService = authService;
     }
     HomeComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.authService.verifyToken()
+            .subscribe(function (res) {
+            console.log('success');
+            console.log(res);
+        }, function (err) {
+            console.log('erro');
+            console.log(err);
+            _this.authService.logout();
+        });
     };
     HomeComponent.prototype.testDialog = function () {
         this.dialogRef = this.dialog.open(__WEBPACK_IMPORTED_MODULE_2__components_dialog_dialog_component__["a" /* DialogComponent */]);
@@ -335,10 +349,10 @@ HomeComponent = __decorate([
         template: __webpack_require__("../../../../../src/app/components/home/home.component.html"),
         styles: [__webpack_require__("../../../../../src/app/components/home/home.component.css")]
     }),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_material__["a" /* MdDialog */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_material__["a" /* MdDialog */]) === "function" && _a || Object])
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_material__["a" /* MdDialog */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_material__["a" /* MdDialog */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_3__services_auth_service__["a" /* AuthService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__services_auth_service__["a" /* AuthService */]) === "function" && _b || Object])
 ], HomeComponent);
 
-var _a;
+var _a, _b;
 //# sourceMappingURL=home.component.js.map
 
 /***/ }),
@@ -493,6 +507,8 @@ module.exports = "<div class=\"bg\">\n  <div class=\"container\">\n    <div clas
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_auth_service__ = __webpack_require__("../../../../../src/app/services/auth.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_angular2_flash_messages__ = __webpack_require__("../../../../angular2-flash-messages/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_angular2_flash_messages___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_angular2_flash_messages__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rxjs_add_operator_catch__ = __webpack_require__("../../../../rxjs/add/operator/catch.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rxjs_add_operator_catch___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_rxjs_add_operator_catch__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -502,6 +518,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+
 
 
 
@@ -518,14 +535,9 @@ var KitchenComponent = (function () {
         this.itensCooked = [];
     }
     KitchenComponent.prototype.ngOnInit = function () {
-        var _this = this;
-        if (!this.authService.loggedIn()) {
-            this.flashMessage.show('Por favor autentique-se para acessar uma area restrita.', { cssClass: 'alert-warning', timeout: 5000 });
-            this.router.navigate(['']);
-        }
         this.getData();
         setTimeout(function () {
-            _this.getData();
+            window.location.reload();
         }, 10000);
     };
     // ---------------- ITEMS TO COOK ---------------------------------------
@@ -553,7 +565,7 @@ var KitchenComponent = (function () {
         });
         setTimeout(function () {
             window.location.reload();
-        }, 3000);
+        }, 1000);
     };
     // -------------------- ITEMS TO FINISH -----------------------
     KitchenComponent.prototype.selectAllItensToFinish = function () {
@@ -580,7 +592,7 @@ var KitchenComponent = (function () {
         });
         setTimeout(function () {
             window.location.reload();
-        }, 3000);
+        }, 1000);
     };
     // -----------------ITENS TO DELIVERY ------------------
     KitchenComponent.prototype.selectAllItensToDelivery = function () {
@@ -607,7 +619,7 @@ var KitchenComponent = (function () {
         });
         setTimeout(function () {
             window.location.reload();
-        }, 3000);
+        }, 1000);
     };
     // -------- GET DATA -------------------
     KitchenComponent.prototype.getData = function () {
@@ -669,6 +681,14 @@ var KitchenComponent = (function () {
             console.log(_this.itensCooked);
             console.log(_this.itensCooking);
             console.log(_this.itensOrdered);
+        }, function (err) {
+            console.log(err);
+            if (err.status === 403) {
+                console.log('erro do token');
+                _this.flashMessage.show('Por favor autentique-se para acessar uma area restrita.', { cssClass: 'alert-warning', timeout: 5000 });
+                _this.router.navigate(['']);
+                _this.authService.logout();
+            }
         });
     };
     return KitchenComponent;
@@ -759,6 +779,7 @@ var LoginComponent = (function () {
             else {
                 _this.flashMessage.show('Usuario ou senha incorretos', { cssClass: 'alert-warning', timeout: 3000 });
                 _this.router.navigate(['login']);
+                console.log(data);
             }
         });
     };
@@ -842,10 +863,6 @@ var ManageaccountsComponent = (function () {
         };
     }
     ManageaccountsComponent.prototype.ngOnInit = function () {
-        if (!this.authService.loggedIn()) {
-            this.flashMessage.show('Por favor autentique-se para acessar uma area restrita.', { cssClass: 'alert-warning', timeout: 5000 });
-            this.router.navigate(['']);
-        }
         this.loadAccounts();
     };
     ManageaccountsComponent.prototype.loadAccounts = function () {
@@ -860,6 +877,14 @@ var ManageaccountsComponent = (function () {
                     _this.accounts.push(account);
                 }
             });
+        }, function (err) {
+            console.log(err);
+            if (err.status === 403) {
+                console.log('erro do token');
+                _this.flashMessage.show('Por favor autentique-se para acessar uma area restrita.', { cssClass: 'alert-warning', timeout: 5000 });
+                _this.router.navigate(['']);
+                _this.authService.logout();
+            }
         });
     };
     return ManageaccountsComponent;
@@ -946,19 +971,22 @@ var ManageitensComponent = (function () {
     ManageitensComponent.prototype.ngOnInit = function () {
         this.loadItens();
     };
-    ManageitensComponent.prototype.testDialog = function () {
-        this.dialogRef = this.dialog.open(__WEBPACK_IMPORTED_MODULE_6__components_dialog_dialog_component__["a" /* DialogComponent */]);
-    };
-    ManageitensComponent.prototype.testItem = function () {
-        this.dialogRef = this.dialog.open(__WEBPACK_IMPORTED_MODULE_7__components_item_item_component__["a" /* ItemComponent */]);
-        this.dialogRef.updatePosition({ top: '0', left: '50px' });
-    };
     ManageitensComponent.prototype.loadItens = function () {
         var _this = this;
         this.manageItensService.getAllItens()
             .subscribe(function (res) {
             console.log(res);
             _this.itens = res;
+            console.log(localStorage.getItem('id_token'));
+        }, function (err) {
+            console.log(err);
+            if (err.status === 403 || err.status === 401) {
+                console.log('erro do usuario');
+                _this.flashMessage.show('Por favor autentique-se para acessar uma area restrita.', { cssClass: 'alert-warning', timeout: 5000 });
+                _this.router.navigate(['home']);
+                console.log(localStorage.getItem('id_token'));
+                _this.authService.logout();
+            }
         });
     };
     ManageitensComponent.prototype.loadCategories = function () {
@@ -1041,7 +1069,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/components/navbar/navbar.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<nav class=\"navbar navbar-default\">\n      <div class=\"container\">\n        <div class=\"navbar-header\">\n          <button type=\"button\" class=\"navbar-toggle collapsed\" data-toggle=\"collapse\" data-target=\"#navbar\" aria-expanded=\"false\" aria-controls=\"navbar\">\n            <span class=\"sr-only\">Toggle navigation</span>\n            <span class=\"icon-bar\"></span>\n            <span class=\"icon-bar\"></span>\n            <span class=\"icon-bar\"></span>\n          </button>\n          <a class=\"navbar-brand\" href=\"#\">Food App</a>\n        </div>\n        <div id=\"navbar\" class=\"collapse navbar-collapse\">\n          <ul class=\"nav navbar-nav navbar-left\">\n            <li [routerLinkActive]=\"['active']\" [routerLinkActiveOptions] = \"{exact:true}\"><a [routerLink]=\"['/']\">Home</a></li>\n            <li>{{userMessage}}</li>\n          </ul>\n\n          <ul class=\"nav navbar-nav navbar-right\">\n            <li *ngIf=\"authService.loggedIn()\" [routerLinkActive]=\"['active']\" [routerLinkActiveOptions] = \"{exact:true}\"><a [routerLink]=\"['/kitchen']\">Cozinha</a></li>\n            <li *ngIf=\"authService.loggedIn()\" [routerLinkActive]=\"['active']\" [routerLinkActiveOptions] = \"{exact:true}\"><a [routerLink]=\"['/manageaccounts']\">Contas</a></li>\n            <li *ngIf=\"authService.loggedIn()\" [routerLinkActive]=\"['active']\" [routerLinkActiveOptions] = \"{exact:true}\"><a [routerLink]=\"['/manageitens']\">Itens</a></li>\n\n            <li *ngIf=\"!authService.loggedIn()\" [routerLinkActive]=\"['active']\" [routerLinkActiveOptions] = \"{exact:true}\"><a [routerLink]=\"['/login']\">Login</a></li>\n            <li *ngIf=\"!authService.loggedIn()\" [routerLinkActive]=\"['active']\" [routerLinkActiveOptions] = \"{exact:true}\"><a [routerLink]=\"['/register']\">Registrar</a></li>\n            <li *ngIf=\"authService.loggedIn()\"><a (click)=\"onLogoutClick()\" href=\"#\">Logout</a></li>\n          </ul>\n        </div><!--/.nav-collapse -->\n      </div>\n    </nav>\n"
+module.exports = "<nav class=\"navbar navbar-default\">\n      <div class=\"container\">\n        <div class=\"navbar-header\">\n          <button type=\"button\" class=\"navbar-toggle collapsed\" data-toggle=\"collapse\" data-target=\"#navbar\" aria-expanded=\"false\" aria-controls=\"navbar\">\n            <span class=\"sr-only\">Toggle navigation</span>\n            <span class=\"icon-bar\"></span>\n            <span class=\"icon-bar\"></span>\n            <span class=\"icon-bar\"></span>\n          </button>\n          <a class=\"navbar-brand\" href=\"#\">Food App</a>\n        </div>\n        <div id=\"navbar\" class=\"collapse navbar-collapse\">\n          <ul class=\"nav navbar-nav navbar-left\">\n            <li>{{userMessage}}</li>\n          </ul>\n\n          <ul class=\"nav navbar-nav navbar-right\">\n            <li *ngIf=\"authService.loggedIn()\" [routerLinkActive]=\"['active']\" [routerLinkActiveOptions] = \"{exact:true}\"><a [routerLink]=\"['/kitchen']\">Cozinha</a></li>\n            <li *ngIf=\"authService.loggedIn()\" [routerLinkActive]=\"['active']\" [routerLinkActiveOptions] = \"{exact:true}\"><a [routerLink]=\"['/manageaccounts']\">Contas</a></li>\n            <li *ngIf=\"authService.loggedIn()\" [routerLinkActive]=\"['active']\" [routerLinkActiveOptions] = \"{exact:true}\"><a [routerLink]=\"['/manageitens']\">Itens</a></li>\n\n            <li *ngIf=\"!authService.loggedIn()\" [routerLinkActive]=\"['active']\" [routerLinkActiveOptions] = \"{exact:true}\"><a [routerLink]=\"['/login']\">Login</a></li>\n            <li *ngIf=\"!authService.loggedIn()\" [routerLinkActive]=\"['active']\" [routerLinkActiveOptions] = \"{exact:true}\"><a [routerLink]=\"['/register']\">Registrar</a></li>\n            <li *ngIf=\"authService.loggedIn()\"><a (click)=\"onLogoutClick()\" href=\"#\">Logout</a></li>\n          </ul>\n        </div><!--/.nav-collapse -->\n      </div>\n    </nav>\n"
 
 /***/ }),
 
@@ -1399,6 +1427,12 @@ var AuthService = (function () {
         this.isLoggedIn = false;
         localStorage.clear();
     };
+    AuthService.prototype.verifyToken = function () {
+        var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["a" /* Headers */]();
+        headers.append('x-access-token', localStorage.getItem('id_token'));
+        return this.http.get('/verifyToken', { headers: headers })
+            .map(function (res) { return res; });
+    };
     return AuthService;
 }());
 AuthService = __decorate([
@@ -1420,6 +1454,8 @@ var _a, _b;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_http__ = __webpack_require__("../../../http/@angular/http.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_map__ = __webpack_require__("../../../../rxjs/add/operator/map.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_map___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_map__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_catch__ = __webpack_require__("../../../../rxjs/add/operator/catch.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_catch___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_catch__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1432,12 +1468,15 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 var KitchenService = (function () {
     function KitchenService(http) {
         this.http = http;
     }
     KitchenService.prototype.getKitchenItens = function () {
-        return this.http.get('/accountskitchen')
+        var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["a" /* Headers */]();
+        headers.append('x-access-token', localStorage.getItem('id_token'));
+        return this.http.get('/accountskitchen', { headers: headers })
             .map(function (res) { return res.json(); });
     };
     KitchenService.prototype.updateItensAccount = function (updateData) {
@@ -1482,7 +1521,9 @@ var ManageaccountsService = (function () {
         this.http = http;
     }
     ManageaccountsService.prototype.getAllAccounts = function () {
-        return this.http.get('/account')
+        var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["a" /* Headers */]();
+        headers.append('x-access-token', localStorage.getItem('id_token'));
+        return this.http.get('/account', { headers: headers })
             .map(function (res) { return res.json(); });
     };
     return ManageaccountsService;
@@ -1523,7 +1564,9 @@ var ManageitensService = (function () {
         this.http = http;
     }
     ManageitensService.prototype.getAllItens = function () {
-        return this.http.get('/item')
+        var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["a" /* Headers */]();
+        headers.append('x-access-token', localStorage.getItem('id_token'));
+        return this.http.get('/item', { headers: headers })
             .map(function (res) { return res.json(); });
     };
     ManageitensService.prototype.createItem = function (item) {
@@ -1541,8 +1584,6 @@ var ManageitensService = (function () {
     ManageitensService.prototype.getAllCategories = function () {
         return this.http.get('/category')
             .map(function (res) { return res.json(); });
-    };
-    ManageitensService.prototype.updateCategory = function () {
     };
     return ManageitensService;
 }());

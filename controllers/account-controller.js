@@ -2,6 +2,9 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 
+const jwt = require('jsonwebtoken');
+var passport = require('passport');
+
 var Account = require('../models/account');
 
 module.exports.createAccount = function (req, res) {
@@ -158,17 +161,6 @@ module.exports.deleteItemAccount = function (req, res) {
 }
 
 //get accounts for kitchen
-module.exports.getAccountItensKitchen = function (req, res) {
-    Account.find({ $or: [{ "orderedItens.status": "Ordered" }, { "orderedItens.status": "Cooking" }] })
-        .populate('orderedItens.orderedItem')
-        .populate('customer')
-        .exec(function (err, accounts) {
-            if (err) throw err;
-            res.json(accounts);
-            //console.log(accounts);
-        });
-}
-
 module.exports.getAccountsToKitchen = function (req, res) {
     Account.find({ 'status': 'Opened', 'orderedItens': { $gt: [] } })
         .populate('orderedItens.orderedItem')
@@ -180,8 +172,8 @@ module.exports.getAccountsToKitchen = function (req, res) {
 }
 
 //get accounts by status
-module.exports.getItensAccountsByStatus = function (req, res) {
-    Account.find({ "status": "Opened" })
+module.exports.getItensAccountsNotClosed = function (req, res) {
+    Account.find({ "status": { "$ne": "Closed" } })
         .populate('orderedItens.orderedItem')
         .populate('customer')
         .exec(function (err, accounts) {

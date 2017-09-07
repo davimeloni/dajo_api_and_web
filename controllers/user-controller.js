@@ -41,7 +41,10 @@ module.exports.getUserByEmail = function (req, res) {
 // later functions
 
 module.exports.getUserById = function (id, callback) {
-  User.findById(id, callback);
+  User.findById(id, function(err, user) {
+    if (err) throw err;
+    res.json(user);
+  });
 }
 
 module.exports.getUserByUsername = function (username, callback) {

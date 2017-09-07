@@ -1,23 +1,12 @@
 const JwtStrategy = require('passport-jwt').Strategy;
 const ExtractJwt = require('passport-jwt').ExtractJwt;
+var LocalStrategy = require('passport-local').Strategy;
+var passport = require('passport');
 const User = require('../models/user');
 const config = require('./config');
 
-module.exports = function(passport){
-  var opts = {};
-  opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
-  opts.secretOrKey = config.secretKey;
-  passport.use(new JwtStrategy(opts, (jwt_payload, done) => {
-    User.getUserById(jwt_payload._doc._id, (err, user) => {
-      if(err){
-        return done(err, false);
-      }
+exports.local = passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
-      if(user){
-        return done(null, user);
-      } else {
-        return done(null, false);
-      }
-    });
-  }));
-}
+module.exports = function(passport){}

@@ -13,13 +13,18 @@ var itemController = require('../controllers/item-controller');
 var categoryController = require('../controllers/category-controller');
 var accountController = require('../controllers/account-controller');
 var userController = require('../controllers/user-controller');
+var verify = require('../config/verify');
 
 //------------------------------------------------------------------------------------
+router
+    .route('/verifyToken')
+    .get(verify.verifyOrdinaryUser);
+
 //item
 //methods
 router
     .route('/item')
-    .get(itemController.getAllItens)
+    .get(verify.verifyOrdinaryUser, itemController.getAllItens)
     .post(itemController.createItem);
 
 router
@@ -43,7 +48,7 @@ router
 router
     .route('/account')
     .post(accountController.createAccount)
-    .get(accountController.getAllAccounts);
+    .get(verify.verifyOrdinaryUser, accountController.getAllAccounts);
 
 
 router
@@ -78,12 +83,12 @@ router
 //get itens by status
 router
     .route('/accountstatus')
-    .get(accountController.getItensAccountsByStatus);
+    .get(accountController.getItensAccountsNotClosed);
 
 //get accounts with itens in the kitchen
 router
     .route('/accountskitchen')
-    .get(accountController.getAccountsToKitchen);
+    .get(verify.verifyOrdinaryUser, accountController.getAccountsToKitchen);
 
 // -------------------USER---------------------------------
 //user
@@ -99,23 +104,26 @@ router
 router.post('/register', (req, res, next) => {
     let newUser = new User({
         email: req.body.email,
-        username: req.body.username,
+        username: req.body.username.toLowerCase(),
         password: req.body.password,
-        name: req.body.name
+        name: req.body.name,
+        kind: req.body.kind
     });
 
     userController.addUser(newUser, (err, user) => {
         if (err) {
-            res.json({ success: false, msg: 'Failed to register user. Username or Email already registered' });
+            res.json({ success: false, msg: 'Falha ao registrar, usuario ou e-mail ja existem' });
         } else {
-            res.json({ success: true, msg: 'User registered' });
+            passport.authenticate('local')(req, res, function () {
+                res.json({ success: true, msg: 'Registrado com sucesso, agora você pode logar' });
+            });
         }
     });
 });
 
 // Authenticate
 router.post('/authenticate', (req, res, next) => {
-    const username = req.body.username;
+    const username = req.body.username.toLowerCase();
     const password = req.body.password;
 
     userController.getUserByUsername(username, (err, user) => {
@@ -125,53 +133,20 @@ router.post('/authenticate', (req, res, next) => {
         }
 
         if (password == user.password) {
-            const token = jwt.sign(user, config.secretKey, {
-                expiresIn: 43200 // 12 hours
+
+            var token = verify.getToken(user);
+            res.status(200).json({
+                status: 'Login successful!',
+                success: true,
+                token: token,
+                user: user
             });
 
-            res.json({
-                success: true,
-                token: 'JWT ' + token,
-                user: {
-                    id: user._id,
-                    username: user.username,
-                    email: user.email,
-                    name: user.name
-                }
-            });
         } else {
             return res.json({ success: false, msg: 'Wrong password' });
         }
 
-        /*
-      userController.comparePassword(password, user.password, (err, isMatch) => {
-        if(err) throw err;
-        if(isMatch){
-          const token = jwt.sign(user, config.secret, {
-            expiresIn: 604800 // 1 week
-          });
-  
-          res.json({
-            success: true,
-            token: 'JWT '+token,
-            user: {
-              id: user._id,
-              username: user.username,
-              email: user.email
-            }
-          });
-        } else {
-          return res.json({success: false, msg: 'Wrong password'});
-        }
-        
-      });
-      */
     });
-});
-
-// Profile
-router.get('/profile', passport.authenticate('jwt', { session: false }), (req, res, next) => {
-    res.json({ user: req.user });
 });
 
 
