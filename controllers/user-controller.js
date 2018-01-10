@@ -11,7 +11,7 @@ module.exports.createCustomer = function (req, res) {
   User.findOne({ 'OauthId': req.body.OauthId }, function (err, user) {
     if (err) return done(err);
     if (user) {
-      console.log('pegando um user ja existente');
+      console.log('getting existing user');
       console.log(user)
       res.json(user);
       return;
@@ -21,7 +21,7 @@ module.exports.createCustomer = function (req, res) {
       newUser.save(function (err, newuser) {
         if (err) throw err;
         console.log(newuser);
-        console.log('criando um novo user');
+        console.log('creating new user');
         res.json(newuser)
         return;
       })

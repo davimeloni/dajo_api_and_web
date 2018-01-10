@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-var dbUrl = 'mongodb://admin:123@ds115583.mlab.com:15583/foodapp';
+var dbUrl = 'mongodb://admin2:123@ds137256.mlab.com:37256/restaurant-web';
 //var dbUrl = 'mongodb://localhost:27017/foodapp';
 var retry = null;
 
