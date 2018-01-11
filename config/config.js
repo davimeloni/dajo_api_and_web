@@ -3,6 +3,6 @@ module.exports = {
     'facebook': {
         clientID: '242707719571375',
         clientSecret: 'e25673dd056ed3ea85c7ca5c55be6142',
-        callbackURL: 'https://foodapptestxyz.herokuapp.com/auth/facebook/callback'
+        callbackURL: 'https://restaurant-webapp.herokuapp.com/auth/facebook/callback'
     }   
 }

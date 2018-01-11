@@ -56,6 +56,7 @@ module.exports.getUserByUsername = function (username, callback) {
 module.exports.addUser = function (newUser, callback) {
   newUser.save(callback);
 }
+
 module.exports.comparePassword = function (password, userPassword, callback) {
     var isMatch = false;
     if(password === userPassword) {
