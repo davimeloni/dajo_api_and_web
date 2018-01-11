@@ -112,10 +112,10 @@ router.post('/register', (req, res, next) => {
 
     userController.addUser(newUser, (err, user) => {
         if (err) {
-            res.json({ success: false, msg: 'Fail to register, user or e-mail already exist' });
+            res.json({ success: false, msg: 'Failed to register, user or e-mail already exist' });
         } else {
             passport.authenticate('local')(req, res, function () {
-                res.json({ success: true, msg: 'Successful registered, please log in' });
+                res.json({ success: true, msg: 'Successful registered' });
             });
         }
     });
