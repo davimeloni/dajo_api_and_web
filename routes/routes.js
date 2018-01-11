@@ -114,9 +114,9 @@ router.post('/register', (req, res, next) => {
         if (err) {
             res.json({ success: false, msg: 'Failed to register, user or e-mail already exist' });
         } else {
-            passport.authenticate('local')(req, res, function () {
+            //passport.authenticate('local')(req, res, function () {
                 res.json({ success: true, msg: 'Successful registered' });
-            });
+            //});
         }
     });
 });
